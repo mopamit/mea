@@ -42,6 +42,22 @@
         .animate-in.slide-in-from-right-4 {
             animation: slideInRight 0.4s ease-out forwards;
         }
+        
+        /* Custom Scrollbar for inner areas */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
 <body class="bg-[#F8F9FA] text-[#333333] min-h-screen">
@@ -78,6 +94,9 @@
         const Video = (props) => <IconBase name="fas fa-video" {...props} />;
         const FilePdf = (props) => <IconBase name="fas fa-file-pdf" {...props} />;
         const Robot = (props) => <IconBase name="fas fa-robot" {...props} />;
+        const Bell = (props) => <IconBase name="far fa-bell" {...props} />;
+        const Search = (props) => <IconBase name="fas fa-search" {...props} />;
+        const Users = (props) => <IconBase name="fas fa-users" {...props} />;
 
         // --- Mock Data ---
         const mockSubjects = [
@@ -206,10 +225,10 @@
               <header className="bg-white border-b border-[#EBEBEB] sticky top-0 z-30 shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="bg-blue-600 text-white p-1.5 rounded-[12px] shadow-sm shadow-blue-200">
+                    <div className="bg-blue-600 text-white p-1.5 rounded-[12px] shadow-sm shadow-blue-200 cursor-pointer" onClick={navigateHome}>
                       <GraduationCap size={24} />
                     </div>
-                    <div className="flex items-baseline gap-2">
+                    <div className="flex items-baseline gap-2 cursor-pointer" onClick={navigateHome}>
                       <h1 className="text-2xl font-black bg-gradient-to-l from-blue-700 to-indigo-600 bg-clip-text text-transparent tracking-tight">
                         מאה
                       </h1>
@@ -218,22 +237,60 @@
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
+                  
+                  {/* Top Navbar Actions */}
+                  <div className="flex items-center gap-1 sm:gap-3">
+                    
+                    {/* Action Icons */}
+                    <div className="hidden md:flex items-center gap-1 bg-slate-50 p-1 rounded-full border border-slate-100">
+                        <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-white hover:shadow-sm rounded-full transition-all relative group" title="יומן מערכת">
+                          <Calendar size={18} />
+                        </button>
+                        <button className="p-2 text-slate-400 hover:text-amber-600 hover:bg-white hover:shadow-sm rounded-full transition-all relative group" title="המחברת שלי">
+                          <PenTool size={18} />
+                        </button>
+                        <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-white hover:shadow-sm rounded-full transition-all relative group" title="צ'אט והודעות">
+                          <MessageCircle size={18} />
+                        </button>
+                        
+                        {/* Notifications with Badge & Tooltip */}
+                        <div className="relative group">
+                            <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-white hover:shadow-sm rounded-full transition-all">
+                              <Bell size={18} />
+                              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 border border-white rounded-full"></span>
+                            </button>
+                            {/* Notification Dropdown (Hover) */}
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white border border-[#EBEBEB] shadow-[0_10px_40px_rgba(0,0,0,0.1)] rounded-[16px] p-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 transform origin-top">
+                               <div className="flex items-center gap-2 text-sm font-bold text-[#2D2D2D] border-b border-slate-100 pb-2 mb-2">
+                                   <AlertCircle size={16} className="text-red-500" />
+                                   התראה חשובה
+                               </div>
+                               <div className="text-sm text-slate-600 leading-relaxed">
+                                   <strong>יש מבחן עוד שבוע!</strong> התחל לחזור על החומר ולוודא שהשלמת את כל המשימות הפתוחות.
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="w-px h-6 bg-[#EBEBEB] mx-1 md:mx-2 hidden sm:block"></div>
+
                     <button 
                       onClick={() => setShowTimes(!showTimes)}
                       className="group p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all relative"
                     >
-                      {showTimes ? <Eye size={22} /> : <EyeOff size={22} />}
+                      {showTimes ? <Eye size={20} /> : <EyeOff size={20} />}
                       <span className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-                        הצג זמנים
+                        {showTimes ? 'הסתר זמנים' : 'הצג זמנים'}
                       </span>
                     </button>
-                    <div className="w-px h-6 bg-[#EBEBEB] mx-1"></div>
-                    <div className="text-sm font-medium text-[#757575] hidden sm:block">
-                      שלום, יונתן
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-slate-100 border-2 border-white shadow-sm flex items-center justify-center text-slate-600 font-bold">
-                      י
+                    
+                    <div className="flex items-center gap-3 mr-2">
+                        <div className="text-sm font-medium text-[#757575] hidden sm:block">
+                          שלום, יונתן
+                        </div>
+                        <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 shadow-sm flex items-center justify-center text-slate-600 font-bold text-sm">
+                          י
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -254,8 +311,62 @@
                 )}
               </main>
 
-              {/* Floating Widgets */}
-              <FloatingWidgets />
+              {/* Floating Chatbot */}
+              <FloatingChatbot />
+            </div>
+          );
+        }
+
+        // --- Floating Chatbot Component ---
+        function FloatingChatbot() {
+          const [isOpen, setIsOpen] = useState(false);
+
+          return (
+            <div className="fixed bottom-8 left-8 flex flex-col gap-5 z-50">
+              {isOpen && (
+                <div className="absolute bottom-20 left-0 w-80 md:w-96 bg-white rounded-[24px] shadow-[0_20px_60px_rgb(0,0,0,0.12)] border border-[#EBEBEB] overflow-hidden flex flex-col animate-in slide-in-from-bottom-5">
+                  <div className="bg-indigo-600 px-5 py-4 flex justify-between items-center text-white">
+                    <div className="flex items-center gap-2.5 font-bold text-lg">
+                      <BrainCircuit size={20} /> סוכן AI
+                    </div>
+                    <button onClick={() => setIsOpen(false)} className="text-indigo-100 hover:text-white bg-indigo-500/50 p-1.5 rounded-full transition-colors">
+                      <X size={20} />
+                    </button>
+                  </div>
+                  <div className="p-5 h-80 flex flex-col bg-[#F8F9FA]">
+                    <div className="flex-1 overflow-y-auto space-y-5 pr-1">
+                      <div className="bg-indigo-100/60 text-indigo-900 p-4 rounded-[20px] rounded-tr-sm text-sm w-[85%] leading-relaxed">
+                        היי יונתן! אני סוכן ה-AI שלך למערכת "מאה".<br/> איך אפשר לעזור לך בלמידה היום?
+                      </div>
+                    </div>
+                    <div className="mt-5 relative">
+                      <input 
+                        type="text" 
+                        placeholder="שאל אותי משהו..." 
+                        className="w-full bg-white border border-[#EBEBEB] rounded-full pl-12 pr-5 py-3.5 text-sm focus:outline-none focus:border-indigo-400 shadow-sm"
+                      />
+                      <button className="absolute left-2 top-2 w-9 h-9 bg-indigo-600 hover:bg-indigo-700 transition-colors rounded-full text-white flex items-center justify-center shadow-sm shadow-indigo-200">
+                        <ChevronRight size={18} className="rotate-180" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className={`h-16 px-8 rounded-full flex items-center justify-center gap-3 shadow-[0_8px_20px_rgb(79,70,229,0.25)] transition-all hover:-translate-y-1 hover:shadow-[0_12px_25px_rgb(79,70,229,0.35)] relative ${isOpen ? 'bg-indigo-800 text-white' : 'bg-indigo-600 text-white'}`}
+              >
+                <MessageCircle size={24} />
+                <span className="font-bold text-base">סוכן AI</span>
+                
+                {!isOpen && (
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-300 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-4 w-4 bg-indigo-400 border-2 border-white shadow-sm"></span>
+                  </span>
+                )}
+              </button>
             </div>
           );
         }
@@ -345,7 +456,7 @@
         function SubjectArea({ subject, activeTab, setTab, onBack, showTimes }) {
           const tabs = [
             { id: 'dashboard', icon: BarChart3, label: 'דשבורד ראשי' },
-            { id: 'management', icon: Calendar, label: 'ניהול ויעדים' },
+            { id: 'management', icon: Calendar, label: 'ניהול יעדים' },
             { id: 'library', icon: FileText, label: 'ספריית למידה' },
             { id: 'simulator', icon: BrainCircuit, label: 'סימולטור בגרויות' },
           ];
@@ -477,149 +588,84 @@
                 </div>
               </div>
 
-              {/* CENTER AREA: Content & AI Library grids */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-[400px]">
+              {/* CENTER AREA: Full width Content Library */}
+              <div className="bg-white rounded-[24px] border border-[#EBEBEB] flex flex-col shadow-sm flex-1">
+                <div className="p-5 border-b border-[#EBEBEB] flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-slate-100 rounded-lg text-slate-600">
+                      <BookOpen size={20} />
+                    </div>
+                    <h3 className="font-bold text-lg text-[#2D2D2D]">ספריית תכנים - יחידות לימוד</h3>
+                  </div>
+                  <button className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                    לכל התכנים
+                  </button>
+                </div>
                 
-                {/* Content Library Column */}
-                <div className="bg-white rounded-[24px] border border-[#EBEBEB] flex flex-col overflow-hidden shadow-sm hover:border-emerald-200 transition-colors group">
-                  <div className="p-5 border-b border-[#EBEBEB] bg-gradient-to-l from-emerald-50 to-white flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600">
-                        <BookOpen size={20} />
-                      </div>
-                      <h3 className="font-bold text-lg text-[#2D2D2D]">ספריית תכנים</h3>
+                <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {/* Unit Item 1 */}
+                  <div className="group bg-[#F8F9FA] rounded-[20px] p-5 border border-transparent hover:border-emerald-200 hover:bg-white hover:shadow-md transition-all cursor-pointer flex flex-col">
+                    <div className="w-12 h-12 rounded-xl bg-red-100 text-red-500 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                      <Video size={20} />
+                    </div>
+                    <div className="font-bold text-[#2D2D2D] text-lg mb-2 leading-tight">משוואות מעריכיות - שיעור מלא</div>
+                    <div className="text-sm text-slate-500 mb-4 flex items-center gap-1">
+                        צפייה בוידאו • 45 דק'
+                    </div>
+                    <div className="mt-auto flex items-center text-emerald-600 text-sm font-medium gap-1 group-hover:gap-2 transition-all">
+                        <span>המשך למידה</span> <ChevronRight size={14} />
                     </div>
                   </div>
-                  <div className="p-4 flex-1 flex flex-col gap-2 overflow-y-auto">
-                    {/* Unit Item 1 */}
-                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center flex-shrink-0">
-                          <Video size={16} />
-                        </div>
-                        <div>
-                          <div className="font-bold text-sm text-[#2D2D2D]">משוואות מעריכיות - שיעור מלא</div>
-                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
-                             צפייה בוידאו • 45 דק'
-                          </div>
-                        </div>
-                      </div>
-                      <ChevronRight size={14} className="text-slate-400" />
-                    </div>
-                    {/* Unit Item 2 */}
-                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center flex-shrink-0">
-                          <FilePdf size={16} />
-                        </div>
-                        <div>
-                          <div className="font-bold text-sm text-[#2D2D2D]">גיאומטריה אנליטית - דף נוסחאות</div>
-                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
-                             מסמך PDF • חומר עזר
-                          </div>
-                        </div>
-                      </div>
-                      <ChevronRight size={14} className="text-slate-400" />
-                    </div>
-                    {/* Unit Item 3 */}
-                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center flex-shrink-0">
-                          <Video size={16} />
-                        </div>
-                        <div>
-                          <div className="font-bold text-sm text-[#2D2D2D]">פונקציות טריגונומטריות - פתרון בגרויות</div>
-                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
-                             צפייה בוידאו • 32 דק'
-                          </div>
-                        </div>
-                      </div>
-                      <ChevronRight size={14} className="text-slate-400" />
-                    </div>
-                  </div>
-                  <button className="p-4 text-sm font-bold text-emerald-600 bg-emerald-50/50 hover:bg-emerald-50 transition-colors border-t border-emerald-100/50 w-full text-center">
-                    צפה בכל היחידות ({subject.syllabus.length})
-                  </button>
-                </div>
 
-                {/* AI Learning Column */}
-                <div className="bg-white rounded-[24px] border border-[#EBEBEB] flex flex-col overflow-hidden shadow-sm hover:border-indigo-200 transition-colors group">
-                  <div className="p-5 border-b border-[#EBEBEB] bg-gradient-to-l from-indigo-50 to-white flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
-                        <BrainCircuit size={20} />
-                      </div>
-                      <h3 className="font-bold text-lg text-[#2D2D2D]">אזור למידה עם AI</h3>
+                  {/* Unit Item 2 */}
+                  <div className="group bg-[#F8F9FA] rounded-[20px] p-5 border border-transparent hover:border-blue-200 hover:bg-white hover:shadow-md transition-all cursor-pointer flex flex-col">
+                    <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-500 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                      <FilePdf size={20} />
+                    </div>
+                    <div className="font-bold text-[#2D2D2D] text-lg mb-2 leading-tight">גיאומטריה אנליטית - דף נוסחאות מקיף</div>
+                    <div className="text-sm text-slate-500 mb-4 flex items-center gap-1">
+                        מסמך PDF • חומר עזר לעיון
+                    </div>
+                    <div className="mt-auto flex items-center text-blue-600 text-sm font-medium gap-1 group-hover:gap-2 transition-all">
+                        <span>פתח מסמך</span> <ChevronRight size={14} />
                     </div>
                   </div>
-                  <div className="p-4 flex-1 flex flex-col gap-2 overflow-y-auto">
-                    {/* AI Item 1 */}
-                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center flex-shrink-0">
-                          <MessageCircle size={18} />
-                        </div>
-                        <div>
-                          <div className="font-bold text-sm text-[#2D2D2D]">תרגול אדפטיבי: טריגונומטריה במרחב</div>
-                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
-                             שאלות מותאמות לרמתך • משוב מיידי
-                          </div>
-                        </div>
-                      </div>
-                      <ChevronRight size={14} className="text-slate-400" />
-                    </div>
-                    {/* AI Item 2 */}
-                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center flex-shrink-0">
-                          <Robot size={18} />
-                        </div>
-                        <div>
-                          <div className="font-bold text-sm text-[#2D2D2D]">מורה פרטי AI: פיצוח שאלות הבנה</div>
-                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
-                             הסברים מפורטים צעד אחר צעד
-                          </div>
-                        </div>
-                      </div>
-                      <ChevronRight size={14} className="text-slate-400" />
-                    </div>
-                    {/* AI Item 3 */}
-                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-500 flex items-center justify-center flex-shrink-0">
-                          <FileText size={18} />
-                        </div>
-                        <div>
-                          <div className="font-bold text-sm text-[#2D2D2D]">מחולל מבחני פתע</div>
-                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
-                             צור לעצמך בוחן קצר לבדיקת מוכנות
-                          </div>
-                        </div>
-                      </div>
-                      <ChevronRight size={14} className="text-slate-400" />
-                    </div>
-                  </div>
-                  <button className="p-4 text-sm font-bold text-indigo-600 bg-indigo-50/50 hover:bg-indigo-50 transition-colors border-t border-indigo-100/50 w-full text-center">
-                    התחל סשן תרגול AI
-                  </button>
-                </div>
 
+                  {/* Unit Item 3 */}
+                  <div className="group bg-[#F8F9FA] rounded-[20px] p-5 border border-transparent hover:border-purple-200 hover:bg-white hover:shadow-md transition-all cursor-pointer flex flex-col">
+                    <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-500 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                      <CheckCircle size={20} />
+                    </div>
+                    <div className="font-bold text-[#2D2D2D] text-lg mb-2 leading-tight">פונקציות טריגונומטריות - מבדק הבנה</div>
+                    <div className="text-sm text-slate-500 mb-4 flex items-center gap-1">
+                        שאלון אינטראקטיבי • 10 שאלות
+                    </div>
+                    <div className="mt-auto flex items-center text-purple-600 text-sm font-medium gap-1 group-hover:gap-2 transition-all">
+                        <span>התחל תרגול</span> <ChevronRight size={14} />
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* BOTTOM BANNER: Simulator */}
-              <div className="bg-slate-900 rounded-[20px] p-4 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg relative overflow-hidden mt-2">
-                <div className="absolute right-0 top-0 bottom-0 w-32 bg-cyan-500/10 blur-2xl"></div>
-                <div className="flex items-center gap-4 relative z-10">
-                  <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-cyan-400 flex-shrink-0 border border-slate-700">
-                    <Target size={24} />
+              {/* BOTTOM BANNER: AI Practice */}
+              <div className="bg-gradient-to-l from-indigo-900 to-indigo-800 rounded-[20px] p-5 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg relative overflow-hidden mt-2 border border-indigo-700">
+                <div className="absolute right-0 top-0 bottom-0 w-48 bg-indigo-500/20 blur-3xl"></div>
+                
+                <div className="flex items-center gap-5 relative z-10">
+                  <div className="w-14 h-14 bg-indigo-500/30 rounded-2xl flex items-center justify-center text-indigo-300 flex-shrink-0 border border-indigo-400/30">
+                    <BrainCircuit size={30} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-cyan-300">סימולטור בגרות מלא</h3>
-                    <p className="text-sm text-slate-400">מוכן לדבר האמיתי? תרגל שאלונים מלאים משנים קודמות על זמן אמת.</p>
+                    <h3 className="font-bold text-xl text-white mb-1">כניסה ללמידה ותרגול עם AI</h3>
+                    <p className="text-sm text-indigo-200">
+                      שאלות מותאמות אישית, הסברים של מורה פרטי וירטואלי ומחולל מבחנים אוטומטי.
+                    </p>
                   </div>
                 </div>
-                <button className="bg-cyan-500 hover:bg-cyan-400 text-slate-900 px-6 py-2.5 rounded-full font-bold transition-all text-sm whitespace-nowrap shadow-[0_4px_15px_rgb(6,182,212,0.3)] hover:-translate-y-0.5 relative z-10">
-                  התחל סימולציה
+                
+                <button className="bg-white text-indigo-900 px-8 py-3.5 rounded-full font-bold transition-all text-sm whitespace-nowrap shadow-[0_8px_20px_rgb(0,0,0,0.2)] hover:shadow-[0_8px_25px_rgb(255,255,255,0.2)] hover:-translate-y-0.5 relative z-10 flex items-center gap-2">
+                  <PlayCircle size={18} />
+                  התחל סשן AI
                 </button>
               </div>
 
@@ -633,7 +679,7 @@
             <div className="p-10 animate-in fade-in">
               <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-[#EBEBEB] pb-8">
                 <div>
-                  <h2 className="text-3xl font-bold mb-3 text-[#2D2D2D]">ניהול למידה ותוכנית עבודה</h2>
+                  <h2 className="text-3xl font-bold mb-3 text-[#2D2D2D]">ניהול יעדים ותוכנית עבודה</h2>
                   <p className="text-[#757575] text-lg">הגדרת יעדים, מבנה הבחינה ופריסת התוכן עד הבגרות.</p>
                 </div>
                 <button className="bg-blue-600 text-white px-6 py-3 rounded-full font-medium shadow-[0_8px_20px_rgb(37,99,235,0.25)] hover:bg-blue-700 hover:-translate-y-0.5 transition-all">
@@ -698,51 +744,124 @@
           );
         }
 
-        // --- Screen 4: Study Library (Kept for tab navigation context, though merged into Dashboard) ---
+        // --- Screen 4: Study Library (Redesigned & Expanded) ---
         function Screen4Library() {
           return (
-            <div className="p-10 animate-in fade-in h-full bg-[#F8F9FA]/50">
-              <div className="mb-10">
-                <h2 className="text-3xl font-bold mb-3 text-[#2D2D2D]">ספריית תכנים ו-AI</h2>
-                <p className="text-[#757575] text-lg">בחר איך תרצה ללמוד היום - באמצעות מורה AI אישי או מחומרים קיימים.</p>
+            <div className="p-10 animate-in fade-in h-full bg-[#F8F9FA]/50 flex flex-col">
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold mb-3 text-[#2D2D2D]">ספריית למידה וקהילה</h2>
+                <p className="text-[#757575] text-lg">כל החומרים שאתה צריך במקום אחד, כולל תכנים מצוינים שתלמידים שיתפו.</p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
-                {/* AI Practice Card */}
-                <div className="bg-white rounded-[32px] p-10 border border-[#EBEBEB] shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgb(99,102,241,0.1)] transition-all cursor-pointer group flex flex-col items-center text-center relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-full h-2 bg-gradient-to-r from-indigo-400 to-purple-400"></div>
-                  <div className="w-24 h-24 bg-indigo-50/80 rounded-[24px] flex items-center justify-center mb-8 group-hover:scale-105 transition-transform duration-500">
-                    <BrainCircuit size={48} className="text-indigo-500" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#2D2D2D] mb-4">אזור תרגול ולמידה AI</h3>
-                  <p className="text-[#757575] mb-10 leading-relaxed">
-                    צור מבחנים מותאמים אישית, בקש הסברים פשוטים לנושאים מורכבים, ותרגל עם משוב מיידי שישפר את ההישגים שלך.
-                  </p>
-                  <button className="mt-auto bg-indigo-600 text-white w-full py-4 rounded-full font-medium shadow-[0_8px_20px_rgb(79,70,229,0.2)] group-hover:bg-indigo-700 transition-colors">
-                    התחל סשן AI
-                  </button>
-                </div>
+              {/* Search Bar */}
+              <div className="relative w-full max-w-2xl mb-10 mx-auto">
+                 <input 
+                    type="text" 
+                    placeholder="חפש סיכומים, שיעורים ותכנים שתלמידים אחרים שיתפו..." 
+                    className="w-full pl-5 pr-14 py-4 rounded-full border border-slate-200 shadow-sm focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all text-base bg-white"
+                 />
+                 <div className="absolute top-1/2 right-5 -translate-y-1/2 text-slate-400">
+                    <Search size={20} />
+                 </div>
+              </div>
 
-                {/* Courses & Materials Card */}
-                <div className="bg-white rounded-[32px] p-10 border border-[#EBEBEB] shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgb(16,185,129,0.1)] transition-all cursor-pointer group flex flex-col items-center text-center relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-teal-400"></div>
-                  <div className="w-24 h-24 bg-emerald-50/80 rounded-[24px] flex items-center justify-center mb-8 group-hover:scale-105 transition-transform duration-500">
-                    <BookOpen size={48} className="text-emerald-500" />
+              <div className="flex-1 flex flex-col gap-10">
+                  
+                  {/* Category: Official Content */}
+                  <div>
+                      <h3 className="text-xl font-bold mb-5 flex items-center gap-2 text-[#2D2D2D]">
+                          <BookOpen size={24} className="text-blue-600" />
+                          תכנים נבחרים בקורס
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                          {[
+                              {type: 'video', title: 'אלגברה - בסיס ומתקדם', desc: 'סדרת שיעורי וידאו', icon: Video, color: 'text-red-500', bg: 'bg-red-50'},
+                              {type: 'pdf', title: 'מאגר נוסחאות מלא', desc: 'קובץ להורדה והדפסה', icon: FilePdf, color: 'text-blue-500', bg: 'bg-blue-50'},
+                              {type: 'test', title: 'שאלות אמריקאיות', desc: 'תרגול ומבדקים', icon: CheckCircle, color: 'text-emerald-500', bg: 'bg-emerald-50'},
+                              {type: 'summary', title: 'סיכומי שיעורים', desc: 'מחברות כיתה סרוקות', icon: FileText, color: 'text-amber-500', bg: 'bg-amber-50'}
+                          ].map((item, i) => (
+                              <div key={i} className="bg-white p-5 rounded-[20px] border border-[#EBEBEB] hover:shadow-md transition-shadow cursor-pointer group">
+                                  <div className={`w-12 h-12 ${item.bg} ${item.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform`}>
+                                      <item.icon size={22} />
+                                  </div>
+                                  <h4 className="font-bold text-[#2D2D2D] mb-1">{item.title}</h4>
+                                  <p className="text-sm text-slate-500">{item.desc}</p>
+                              </div>
+                          ))}
+                      </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-[#2D2D2D] mb-4">ספריית תכנים</h3>
-                  <p className="text-[#757575] mb-10 leading-relaxed">
-                    צפה בשיעורי וידאו מוקלטים, קרא סיכומים, הורד דפי נוסחאות וגש למאגר הלמידה המלא והמעודכן של המקצוע.
-                  </p>
-                  <button className="mt-auto bg-emerald-600 text-white w-full py-4 rounded-full font-medium shadow-[0_8px_20px_rgb(5,150,105,0.2)] group-hover:bg-emerald-700 transition-colors">
-                    כניסה למאגר התכנים
-                  </button>
-                </div>
+
+                  <div className="w-full h-px bg-slate-200"></div>
+
+                  {/* Category: Community Content */}
+                  <div>
+                      <div className="flex justify-between items-end mb-5">
+                          <h3 className="text-xl font-bold flex items-center gap-2 text-[#2D2D2D]">
+                              <Users size={24} className="text-indigo-600" />
+                              תכנים נוספים מתלמידים (קהילה)
+                          </h3>
+                          <button className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">צפה בהכל</button>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                          {/* Community Item 1 */}
+                          <div className="bg-white p-5 rounded-[20px] border border-[#EBEBEB] hover:border-indigo-200 transition-colors cursor-pointer group">
+                              <div className="flex justify-between items-start mb-3">
+                                  <span className="text-xs font-bold px-2 py-1 bg-purple-50 text-purple-600 rounded-md">סיכום מעולה</span>
+                                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                                      <div className="w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center">ד</div>
+                                      דניאל א.
+                                  </div>
+                              </div>
+                              <h4 className="font-bold text-[#2D2D2D] text-lg mb-2 group-hover:text-indigo-600 transition-colors">טריגונומטריה - כל הטריקים לזכור את הזהויות</h4>
+                              <p className="text-sm text-slate-500 line-clamp-2 mb-4">סיכום שהכנתי לקראת המגן שעושה סדר בכל הזהויות, מתי כדאי להשתמש באיזו זהות, ואיך לא להתבלבל.</p>
+                              <div className="flex items-center gap-4 text-xs font-medium text-slate-400">
+                                  <span className="flex items-center gap-1"><Eye size={14} /> 1.2k צפיות</span>
+                                  <span className="flex items-center gap-1"><i className="far fa-heart"></i> 342 לייקים</span>
+                              </div>
+                          </div>
+
+                          {/* Community Item 2 */}
+                          <div className="bg-white p-5 rounded-[20px] border border-[#EBEBEB] hover:border-indigo-200 transition-colors cursor-pointer group">
+                              <div className="flex justify-between items-start mb-3">
+                                  <span className="text-xs font-bold px-2 py-1 bg-blue-50 text-blue-600 rounded-md">תרגול מקיף</span>
+                                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                                      <div className="w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center">מ</div>
+                                      מיכל ש.
+                                  </div>
+                              </div>
+                              <h4 className="font-bold text-[#2D2D2D] text-lg mb-2 group-hover:text-indigo-600 transition-colors">מאגר שאלות קשות במיוחד - חדו"א</h4>
+                              <p className="text-sm text-slate-500 line-clamp-2 mb-4">אספתי את כל השאלות שהפילו אותי במתכונות ופתרתי אותן בצורה מלאה ומפורטת. מומלץ למי שמכוון ל-90+.</p>
+                              <div className="flex items-center gap-4 text-xs font-medium text-slate-400">
+                                  <span className="flex items-center gap-1"><Eye size={14} /> 850 צפיות</span>
+                                  <span className="flex items-center gap-1"><i className="far fa-heart"></i> 198 לייקים</span>
+                              </div>
+                          </div>
+
+                          {/* Community Item 3 */}
+                          <div className="bg-white p-5 rounded-[20px] border border-[#EBEBEB] hover:border-indigo-200 transition-colors cursor-pointer group">
+                              <div className="flex justify-between items-start mb-3">
+                                  <span className="text-xs font-bold px-2 py-1 bg-emerald-50 text-emerald-600 rounded-md">טיפים וזמן</span>
+                                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                                      <div className="w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center">ע</div>
+                                      עומר ט.
+                                  </div>
+                              </div>
+                              <h4 className="font-bold text-[#2D2D2D] text-lg mb-2 group-hover:text-indigo-600 transition-colors">איך לנהל זמנים נכון בבגרות?</h4>
+                              <p className="text-sm text-slate-500 line-clamp-2 mb-4">סרטון קצר שהקלטתי שמסביר את טכניקת ה"דילוגים" שלי שעזרה לי לא להיתקע על שאלות ולהספיק לפתור הכל.</p>
+                              <div className="flex items-center gap-4 text-xs font-medium text-slate-400">
+                                  <span className="flex items-center gap-1"><Eye size={14} /> 2.1k צפיות</span>
+                                  <span className="flex items-center gap-1"><i className="far fa-heart"></i> 512 לייקים</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
               </div>
             </div>
           );
         }
 
-        // --- Screen 5: Bagrut Simulator (Kept for tab navigation context, though merged into Dashboard) ---
+        // --- Screen 5: Bagrut Simulator ---
         function Screen5Simulator() {
           return (
             <div className="p-10 animate-in fade-in">
@@ -764,32 +883,6 @@
                     <PlayCircle size={24} />
                     התחל סימולציה מלאה
                   </button>
-                </div>
-              </div>
-            </div>
-          );
-        }
-
-        // --- Floating Widgets (Static / Disabled) ---
-        function FloatingWidgets() {
-          return (
-            <div className="fixed bottom-8 left-8 flex flex-col gap-5 z-50 opacity-90">
-              <div className="flex gap-4">
-                {/* Notebook (Disabled) */}
-                <div 
-                  className="h-16 px-6 rounded-full flex items-center justify-center gap-3 shadow-md bg-white text-slate-400 border border-[#EBEBEB] cursor-default"
-                >
-                  <PenTool size={24} />
-                  <span className="font-bold text-base hidden sm:block">המחברת שלי</span>
-                  <span className="font-bold text-base sm:hidden">מחברת</span>
-                </div>
-                
-                {/* AI Bot (Disabled) */}
-                <div 
-                  className="h-16 px-8 rounded-full flex items-center justify-center gap-3 shadow-md bg-blue-100/50 text-blue-400 border border-blue-200 cursor-default"
-                >
-                  <MessageCircle size={24} />
-                  <span className="font-bold text-base">סוכן AI</span>
                 </div>
               </div>
             </div>
