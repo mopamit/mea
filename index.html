@@ -75,6 +75,9 @@
         const GraduationCap = (props) => <IconBase name="fas fa-graduation-cap" {...props} />;
         const Eye = (props) => <IconBase name="far fa-eye" {...props} />;
         const EyeOff = (props) => <IconBase name="far fa-eye-slash" {...props} />;
+        const Video = (props) => <IconBase name="fas fa-video" {...props} />;
+        const FilePdf = (props) => <IconBase name="fas fa-file-pdf" {...props} />;
+        const Robot = (props) => <IconBase name="fas fa-robot" {...props} />;
 
         // --- Mock Data ---
         const mockSubjects = [
@@ -94,7 +97,7 @@
               { id: 102, title: 'חזרה על טריגונומטריה במרחב', time: "30 דק'" }
             ],
             insights: [
-              { type: 'warning', text: 'שים לב: ניכר קושי בשאלות גיאומטריה אנליטית בסימולציות האחרונות. כדאי להתעכב על זה.' },
+              { type: 'warning', text: 'שים לב: ניכר קושי בשאלות גיאומטריה אנליטית בסימולציות האחרונות.' },
               { type: 'success', text: 'קצב פתרון המשוואות שלך עלה ב-15% בהשוואה לשבוע שעבר!' }
             ],
             syllabus: [
@@ -119,7 +122,7 @@
               { id: 202, title: 'האזנה לקטע הבנת הנשמע מס. 4', time: "20 דק'" }
             ],
             insights: [
-              { type: 'success', text: 'אוצר המילים שלך השתפר משמעותית! השתמשת ב-12 מילים ברמת C1 בחיבור האחרון.' },
+              { type: 'success', text: 'אוצר המילים שלך השתפר! השתמשת ב-12 מילים ברמת C1 בחיבור האחרון.' },
               { type: 'info', text: 'מומלץ לתרגל קריאה מהירה כדי לחסוך זמן ב-Unseen.' }
             ],
             syllabus: [
@@ -144,7 +147,7 @@
               { id: 302, title: 'הכנת כרטיסיות לאירועי מפתח', time: "30 דק'" }
             ],
             insights: [
-              { type: 'warning', text: 'טרם התחלת ללמוד לבגרות זו. מומלץ לבנות תוכנית עבודה ולשבץ זמני קריאה קבועים בלו"ז.' }
+              { type: 'warning', text: 'טרם התחלת ללמוד לבגרות זו. מומלץ לשבץ זמני קריאה קבועים בלו"ז.' }
             ],
             syllabus: [
               { topic: 'התנועה הציונית', status: 'pending', date: '---' },
@@ -221,7 +224,7 @@
                       className="group p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all relative"
                     >
                       {showTimes ? <Eye size={22} /> : <EyeOff size={22} />}
-                      <span className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                      <span className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
                         הצג זמנים
                       </span>
                     </button>
@@ -387,7 +390,7 @@
               </aside>
 
               {/* Main Content Left */}
-              <div className="flex-1 max-w-5xl">
+              <div className="flex-1 max-w-5xl flex flex-col">
                 {/* Mobile Header */}
                 <div className="lg:hidden flex items-center gap-4 mb-8">
                   <button onClick={onBack} className="p-3 bg-white rounded-full shadow-sm">
@@ -396,177 +399,230 @@
                   <h2 className="text-2xl font-bold">{subject.name}</h2>
                 </div>
 
-                <div className="bg-white rounded-[32px] shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-[#EBEBEB] min-h-[700px] overflow-hidden">
+                <div className="flex-1">
                   {activeTab === 'dashboard' && <Screen2Dashboard subject={subject} showTimes={showTimes} />}
-                  {activeTab === 'management' && <Screen3Management subject={subject} showTimes={showTimes} />}
-                  {activeTab === 'library' && <Screen4Library />}
-                  {activeTab === 'simulator' && <Screen5Simulator />}
+                  {activeTab === 'management' && <div className="bg-white rounded-[32px] shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-[#EBEBEB] min-h-[700px] overflow-hidden"><Screen3Management subject={subject} showTimes={showTimes} /></div>}
+                  {activeTab === 'library' && <div className="bg-white rounded-[32px] shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-[#EBEBEB] min-h-[700px] overflow-hidden"><Screen4Library /></div>}
+                  {activeTab === 'simulator' && <div className="bg-white rounded-[32px] shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-[#EBEBEB] min-h-[700px] overflow-hidden"><Screen5Simulator /></div>}
                 </div>
               </div>
             </div>
           );
         }
 
-        // --- Screen 2: Subject Dashboard ---
+        // --- Screen 2: Subject Dashboard (Redesigned) ---
         function Screen2Dashboard({ subject, showTimes }) {
           return (
-            <div className="p-8 animate-in fade-in bg-[#F8F9FA]/30 h-full">
+            <div className="animate-in fade-in h-full flex flex-col gap-6">
               
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              {/* TOP BANNER: Metrics Container */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 
-                {/* Progress Card */}
-                <div className="bg-white p-6 rounded-[24px] border border-[#EBEBEB] flex flex-col items-center justify-center text-center shadow-sm">
-                  <h3 className="text-sm font-bold text-[#757575] mb-4 w-full text-right flex items-center gap-2">
-                    <BookOpen size={16} /> הספק בתוכן
-                  </h3>
-                  <div className="relative w-28 h-28 mb-3">
+                {/* Progress */}
+                <div className="bg-white p-4 rounded-[20px] border border-[#EBEBEB] flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="relative w-12 h-12 flex-shrink-0">
                     <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                      <circle cx="50" cy="50" r="40" className="stroke-slate-100" strokeWidth="10" fill="none" />
+                      <circle cx="50" cy="50" r="40" className="stroke-slate-100" strokeWidth="12" fill="none" />
                       <circle 
                         cx="50" cy="50" r="40" 
                         className={`stroke-current ${subject.progress > 0 ? 'text-blue-500' : 'text-slate-300'}`} 
-                        strokeWidth="10" fill="none" 
+                        strokeWidth="12" fill="none" 
                         strokeDasharray={`${2 * Math.PI * 40}`}
                         strokeDashoffset={`${2 * Math.PI * 40 * (1 - subject.progress / 100)}`}
                         strokeLinecap="round"
                       />
                     </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-3xl font-bold text-[#2D2D2D]">{subject.progress}%</span>
+                  </div>
+                  <div className="overflow-hidden">
+                    <div className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">הספק בתוכן</div>
+                    <div className="text-base font-bold text-[#2D2D2D] leading-tight mt-0.5">{subject.progress}% הושג</div>
+                  </div>
+                </div>
+
+                {/* Target Grade */}
+                <div className="bg-white p-4 rounded-[20px] border border-[#EBEBEB] flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0">
+                    <Target size={20} />
+                  </div>
+                  <div className="overflow-hidden">
+                    <div className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">יעד ציון</div>
+                    <div className="text-base font-bold text-[#2D2D2D] leading-tight mt-0.5">{subject.targetGrade}</div>
+                  </div>
+                </div>
+
+                {/* Upcoming Task */}
+                <div className="bg-white p-4 rounded-[20px] border border-[#EBEBEB] flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                    <ListTodo size={20} />
+                  </div>
+                  <div className="overflow-hidden flex-1">
+                    <div className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">משימה קרובה</div>
+                    <div className="text-sm font-bold text-[#2D2D2D] leading-tight mt-0.5 truncate" title={subject.tasks[0]?.title || 'אין משימות קרובות'}>
+                      {subject.tasks[0]?.title || 'אין משימות קרובות'}
                     </div>
                   </div>
-                  <span className="text-xs bg-slate-50 text-slate-500 px-3 py-1 rounded-full border border-slate-100">
-                    {subject.progress >= 50 ? 'קצב טוב' : 'בתחילת הדרך'}
-                  </span>
                 </div>
 
-                {/* Target Grade Card */}
-                <div className="bg-gradient-to-br from-indigo-500 to-blue-600 p-6 rounded-[24px] text-white flex flex-col justify-between shadow-[0_8px_25px_rgb(59,130,246,0.25)] relative overflow-hidden">
-                  <div className="absolute top-0 right-0 -mt-10 -mr-10 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
-                  <h3 className="text-sm font-bold text-indigo-100 mb-2 flex items-center gap-2 relative z-10">
-                    <Target size={16} /> יעד הציון שלי
-                  </h3>
-                  <div className="relative z-10 mt-2 mb-4">
-                    <span className="text-6xl font-black leading-none">{subject.targetGrade}</span>
+                {/* System Insight */}
+                <div className="bg-white p-4 rounded-[20px] border border-[#EBEBEB] flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
+                    <Lightbulb size={20} />
                   </div>
-                  {showTimes && (
-                     <div className="text-sm bg-black/20 px-3 py-2 rounded-xl backdrop-blur-sm relative z-10 flex items-center gap-2 w-fit">
-                       <Clock size={14} /> 
-                       <span>עוד <strong>{subject.daysLeft || '--'}</strong> ימים לבגרות</span>
-                     </div>
-                  )}
+                  <div className="overflow-hidden flex-1">
+                    <div className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">תובנה אישית</div>
+                    <div className="text-sm font-bold text-[#2D2D2D] leading-tight mt-0.5 truncate" title={subject.insights[0]?.text || 'המשך ללמוד ככה!'}>
+                      {subject.insights[0]?.text || 'המשך ללמוד ככה!'}
+                    </div>
+                  </div>
                 </div>
+              </div>
 
-                {/* Upcoming Tasks Card */}
-                <div className="bg-white p-6 rounded-[24px] border border-[#EBEBEB] flex flex-col shadow-sm">
-                  <div className="flex justify-between items-center mb-5">
-                    <h3 className="text-sm font-bold text-[#757575] flex items-center gap-2">
-                      <ListTodo size={16} /> משימות קרובות
-                    </h3>
-                    <button className="text-xs text-blue-600 font-medium hover:underline">לכל המשימות</button>
+              {/* CENTER AREA: Content & AI Library grids */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-[400px]">
+                
+                {/* Content Library Column */}
+                <div className="bg-white rounded-[24px] border border-[#EBEBEB] flex flex-col overflow-hidden shadow-sm hover:border-emerald-200 transition-colors group">
+                  <div className="p-5 border-b border-[#EBEBEB] bg-gradient-to-l from-emerald-50 to-white flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600">
+                        <BookOpen size={20} />
+                      </div>
+                      <h3 className="font-bold text-lg text-[#2D2D2D]">ספריית תכנים</h3>
+                    </div>
                   </div>
-                  
-                  <div className="flex-1 flex flex-col gap-3">
-                    {subject.tasks.map((task) => (
-                      <div key={task.id} className="flex items-start gap-3 p-3 bg-[#F8F9FA] rounded-[16px] group cursor-pointer hover:bg-blue-50/50 transition-colors border border-transparent hover:border-blue-100">
-                        <div className="w-5 h-5 rounded-full border-2 border-slate-300 mt-0.5 group-hover:border-blue-500 flex-shrink-0 flex items-center justify-center bg-white"></div>
+                  <div className="p-4 flex-1 flex flex-col gap-2 overflow-y-auto">
+                    {/* Unit Item 1 */}
+                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center flex-shrink-0">
+                          <Video size={16} />
+                        </div>
                         <div>
-                          <h4 className="font-medium text-[#2D2D2D] text-sm leading-tight mb-1 group-hover:text-blue-700">{task.title}</h4>
-                          {showTimes && (
-                            <span className="text-xs text-slate-400 flex items-center gap-1">
-                              <Clock size={12} /> {task.time}
-                            </span>
-                          )}
+                          <div className="font-bold text-sm text-[#2D2D2D]">משוואות מעריכיות - שיעור מלא</div>
+                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                             צפייה בוידאו • 45 דק'
+                          </div>
                         </div>
                       </div>
-                    ))}
-                    {subject.tasks.length === 0 && (
-                      <div className="text-sm text-slate-400 italic text-center my-auto">אין משימות קרובות</div>
-                    )}
-                  </div>
-                </div>
-
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                
-                {/* Content Library */}
-                <div className="bg-white rounded-[24px] p-6 border border-[#EBEBEB] hover:border-emerald-200 hover:shadow-[0_8px_30px_rgb(16,185,129,0.06)] transition-all cursor-pointer group flex items-center gap-6">
-                  <div className="w-20 h-20 bg-emerald-50 rounded-[20px] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                    <BookOpen size={36} className="text-emerald-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-[#2D2D2D] mb-2">ספריית תכנים</h3>
-                    <p className="text-[#757575] text-sm leading-relaxed">
-                      סיכומים, שיעורי וידאו ודפי נוסחאות ללמידה מעמיקה של החומר.
-                    </p>
-                  </div>
-                </div>
-
-                {/* AI Practice */}
-                <div className="bg-white rounded-[24px] p-6 border border-[#EBEBEB] hover:border-indigo-200 hover:shadow-[0_8px_30px_rgb(99,102,241,0.06)] transition-all cursor-pointer group flex items-center gap-6">
-                  <div className="w-20 h-20 bg-indigo-50 rounded-[20px] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                    <BrainCircuit size={36} className="text-indigo-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-[#2D2D2D] mb-2">אזור תרגול ולמידה AI</h3>
-                    <p className="text-[#757575] text-sm leading-relaxed">
-                      תרגול אינטראקטיבי, יצירת מבחנים וקבלת הסברים ממורה וירטואלי.
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
-                {/* Simulator Promo */}
-                <div className="lg:col-span-2 bg-slate-900 rounded-[24px] p-8 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_10px_30px_rgb(15,23,42,0.3)]">
-                  <div className="absolute -left-10 -bottom-10 opacity-10 pointer-events-none">
-                    <Target size={150} />
-                  </div>
-                  <div className="relative z-10 max-w-sm">
-                    <h3 className="text-2xl font-bold mb-3 text-cyan-300">סימולטור בגרות</h3>
-                    <p className="text-slate-300 text-sm leading-relaxed mb-6">
-                      מבחן אמת בזמן אמת. תרגל שאלונים מלאים משנים קודמות קבל משוב מדויק על הביצועים שלך.
-                    </p>
-                    <button className="bg-cyan-500 hover:bg-cyan-400 text-slate-900 px-6 py-3 rounded-full font-bold transition-all text-sm flex items-center gap-2">
-                      <PlayCircle size={18} />
-                      התחל סימולציה עכשיו
-                    </button>
-                  </div>
-                  <div className="hidden md:block relative z-10 bg-slate-800/50 border border-slate-700 p-4 rounded-[20px] text-center w-36">
-                    <div className="text-slate-400 text-xs font-medium mb-1">הציון האחרון שלך</div>
-                    <div className="text-3xl font-black text-white">88</div>
-                  </div>
-                </div>
-
-                {/* System Insights */}
-                <div className="lg:col-span-1 bg-white p-6 rounded-[24px] border border-[#EBEBEB] flex flex-col shadow-sm">
-                  <h3 className="text-sm font-bold text-[#757575] mb-5 flex items-center gap-2">
-                    <Lightbulb size={16} /> תובנות מערכת
-                  </h3>
-                  <div className="flex-1 space-y-4">
-                    {subject.insights.map((insight, idx) => (
-                      <div key={idx} className={`p-4 rounded-[16px] text-sm leading-relaxed ${
-                        insight.type === 'warning' 
-                        ? 'bg-amber-50 text-amber-900 border border-amber-100/60' 
-                        : insight.type === 'success'
-                        ? 'bg-emerald-50 text-emerald-900 border border-emerald-100/60'
-                        : 'bg-blue-50 text-blue-900 border border-blue-100/60'
-                      }`}>
-                        <div className="flex items-start gap-3">
-                          {insight.type === 'warning' && <AlertCircle size={18} className="text-amber-500 flex-shrink-0 mt-0.5" />}
-                          {insight.type === 'success' && <CheckCircle size={18} className="text-emerald-500 flex-shrink-0 mt-0.5" />}
-                          {insight.type === 'info' && <Lightbulb size={18} className="text-blue-500 flex-shrink-0 mt-0.5" />}
-                          <span>{insight.text}</span>
+                      <ChevronRight size={14} className="text-slate-400" />
+                    </div>
+                    {/* Unit Item 2 */}
+                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center flex-shrink-0">
+                          <FilePdf size={16} />
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm text-[#2D2D2D]">גיאומטריה אנליטית - דף נוסחאות</div>
+                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                             מסמך PDF • חומר עזר
+                          </div>
                         </div>
                       </div>
-                    ))}
+                      <ChevronRight size={14} className="text-slate-400" />
+                    </div>
+                    {/* Unit Item 3 */}
+                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center flex-shrink-0">
+                          <Video size={16} />
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm text-[#2D2D2D]">פונקציות טריגונומטריות - פתרון בגרויות</div>
+                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                             צפייה בוידאו • 32 דק'
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight size={14} className="text-slate-400" />
+                    </div>
                   </div>
+                  <button className="p-4 text-sm font-bold text-emerald-600 bg-emerald-50/50 hover:bg-emerald-50 transition-colors border-t border-emerald-100/50 w-full text-center">
+                    צפה בכל היחידות ({subject.syllabus.length})
+                  </button>
+                </div>
+
+                {/* AI Learning Column */}
+                <div className="bg-white rounded-[24px] border border-[#EBEBEB] flex flex-col overflow-hidden shadow-sm hover:border-indigo-200 transition-colors group">
+                  <div className="p-5 border-b border-[#EBEBEB] bg-gradient-to-l from-indigo-50 to-white flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
+                        <BrainCircuit size={20} />
+                      </div>
+                      <h3 className="font-bold text-lg text-[#2D2D2D]">אזור למידה עם AI</h3>
+                    </div>
+                  </div>
+                  <div className="p-4 flex-1 flex flex-col gap-2 overflow-y-auto">
+                    {/* AI Item 1 */}
+                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center flex-shrink-0">
+                          <MessageCircle size={18} />
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm text-[#2D2D2D]">תרגול אדפטיבי: טריגונומטריה במרחב</div>
+                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                             שאלות מותאמות לרמתך • משוב מיידי
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight size={14} className="text-slate-400" />
+                    </div>
+                    {/* AI Item 2 */}
+                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center flex-shrink-0">
+                          <Robot size={18} />
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm text-[#2D2D2D]">מורה פרטי AI: פיצוח שאלות הבנה</div>
+                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                             הסברים מפורטים צעד אחר צעד
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight size={14} className="text-slate-400" />
+                    </div>
+                    {/* AI Item 3 */}
+                    <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-[14px] cursor-pointer border border-transparent hover:border-slate-200 transition-all">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-500 flex items-center justify-center flex-shrink-0">
+                          <FileText size={18} />
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm text-[#2D2D2D]">מחולל מבחני פתע</div>
+                          <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                             צור לעצמך בוחן קצר לבדיקת מוכנות
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight size={14} className="text-slate-400" />
+                    </div>
+                  </div>
+                  <button className="p-4 text-sm font-bold text-indigo-600 bg-indigo-50/50 hover:bg-indigo-50 transition-colors border-t border-indigo-100/50 w-full text-center">
+                    התחל סשן תרגול AI
+                  </button>
                 </div>
 
               </div>
+
+              {/* BOTTOM BANNER: Simulator */}
+              <div className="bg-slate-900 rounded-[20px] p-4 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg relative overflow-hidden mt-2">
+                <div className="absolute right-0 top-0 bottom-0 w-32 bg-cyan-500/10 blur-2xl"></div>
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-cyan-400 flex-shrink-0 border border-slate-700">
+                    <Target size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-cyan-300">סימולטור בגרות מלא</h3>
+                    <p className="text-sm text-slate-400">מוכן לדבר האמיתי? תרגל שאלונים מלאים משנים קודמות על זמן אמת.</p>
+                  </div>
+                </div>
+                <button className="bg-cyan-500 hover:bg-cyan-400 text-slate-900 px-6 py-2.5 rounded-full font-bold transition-all text-sm whitespace-nowrap shadow-[0_4px_15px_rgb(6,182,212,0.3)] hover:-translate-y-0.5 relative z-10">
+                  התחל סימולציה
+                </button>
+              </div>
+
             </div>
           );
         }
@@ -642,7 +698,7 @@
           );
         }
 
-        // --- Screen 4: Study Library ---
+        // --- Screen 4: Study Library (Kept for tab navigation context, though merged into Dashboard) ---
         function Screen4Library() {
           return (
             <div className="p-10 animate-in fade-in h-full bg-[#F8F9FA]/50">
@@ -686,7 +742,7 @@
           );
         }
 
-        // --- Screen 5: Bagrut Simulator ---
+        // --- Screen 5: Bagrut Simulator (Kept for tab navigation context, though merged into Dashboard) ---
         function Screen5Simulator() {
           return (
             <div className="p-10 animate-in fade-in">
